@@ -1,0 +1,21 @@
+# docker-compose up -d
+version: '2.1'
+
+services:
+  jenkins:
+    build: 
+      context: .
+      dockerfile: ./jenkins.dockerfile
+    volumes:
+      # chmod -R 777 /data/jenkins
+      # chcon -Rt svirt_sandbox_file_t /data/jenkins  # SELinux에서 /ORCL 접근 허용
+      - '/data/jenkins:/var/jenkins_home'
+      - '/etc/localtime:/etc/localtime'
+#      - '/var/run/docker.sock:/var/run/docker.sock'
+    # (-e) 변수
+    environment:
+      - 'TZ=Asia/Seoul'
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    network_mode: host
